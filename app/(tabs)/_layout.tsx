@@ -7,106 +7,46 @@ export default function TabLayout() {
     <Tabs
       screenOptions={{
         headerShown: false,
-        tabBarShowLabel: false, // we control labels manually
         tabBarStyle: {
           backgroundColor: COLORS.white,
-          borderTopWidth: 0.5,
-          borderTopColor: COLORS.paper,
         },
-        tabBarActiveTintColor: COLORS.shelfGreen,
-        tabBarInactiveTintColor: COLORS.ash,
       }}
     >
-      {/* 1. LOW-STOCKS — LEFT */}
       <Tabs.Screen
         name="low-stock"
         options={{
-          tabBarIcon: ({ focused, color, size }) => (
-            <TabIcon
-              focused={focused}
-              color={focused ? COLORS.amber : color}
-              size={size}
-              icon="warning-outline"
-              label="Low Stock"
-            />
+          tabBarIcon: ({ color }) => (
+            <Ionicons name="warning-outline" size={22} color={color} />
           ),
+          tabBarLabel: ({ focused }) => (focused ? "Low Stock" : ""),
+          tabBarActiveTintColor: COLORS.amber,
+          tabBarInactiveTintColor: COLORS.ash,
         }}
       />
 
-      {/* 2. HOME — CENTER */}
       <Tabs.Screen
         name="index"
         options={{
-          tabBarIcon: ({ focused, color, size }) => (
-            <TabIcon
-              focused={focused}
-              color={color}
-              size={size}
-              icon={focused ? "home" : "home-outline"}
-              label="Home"
-            />
+          tabBarIcon: ({ color }) => (
+            <Ionicons name="home-outline" size={22} color={color} />
           ),
+          tabBarLabel: ({ focused }) => (focused ? "Home" : ""),
+          tabBarActiveTintColor: COLORS.shelfGreen,
+          tabBarInactiveTintColor: COLORS.ash,
         }}
       />
 
-      {/* 3. ACCOUNT — RIGHT */}
       <Tabs.Screen
         name="account"
         options={{
-          tabBarIcon: ({ focused, color, size }) => (
-            <TabIcon
-              focused={focused}
-              color={color}
-              size={size}
-              icon={focused ? "person" : "person-outline"}
-              label="Account"
-            />
+          tabBarIcon: ({ color }) => (
+            <Ionicons name="person-outline" size={22} color={color} />
           ),
+          tabBarLabel: ({ focused }) => (focused ? "Account" : ""),
+          tabBarActiveTintColor: COLORS.ink,
+          tabBarInactiveTintColor: COLORS.ash,
         }}
       />
     </Tabs>
-  );
-}
-
-/* ---------------------------- */
-/* Tab Icon Component           */
-/* ---------------------------- */
-
-function TabIcon({
-  focused,
-  icon,
-  label,
-  color,
-  size,
-}: {
-  focused: boolean;
-  icon: keyof typeof Ionicons.glyphMap;
-  label: string;
-  color: string;
-  size: number;
-}) {
-  return (
-    <div
-      style={{
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        justifyContent: "center",
-        gap: 2,
-      }}
-    >
-      <Ionicons name={icon} size={size} color={color} />
-      {focused && (
-        <span
-          style={{
-            fontSize: 12,
-            color: color,
-            lineHeight: "14px",
-          }}
-        >
-          {label}
-        </span>
-      )}
-    </div>
   );
 }
