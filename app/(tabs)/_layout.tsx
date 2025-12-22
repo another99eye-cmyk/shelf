@@ -1,4 +1,3 @@
-import { Text, StyleSheet } from 'react-native';
 import { Tabs } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
 import { COLORS } from "@/src/theme/colors";
@@ -6,60 +5,108 @@ import { COLORS } from "@/src/theme/colors";
 export default function TabLayout() {
   return (
     <Tabs
-      screenOptions={({ route }) => ({
+      screenOptions={{
         headerShown: false,
-        tabBarShowLabel: false,
-        tabBarActiveTintColor: COLORS.shelfGreen,
-        tabBarInactiveTintColor: COLORS.ash,
+        tabBarShowLabel: false, // we control labels manually
         tabBarStyle: {
           backgroundColor: COLORS.white,
-          borderTopWidth: 0,
+          borderTopWidth: 0.5,
+          borderTopColor: COLORS.paper,
         },
-        tabBarIcon: ({ color, focused }) => {
-          let iconName: keyof typeof Ionicons.glyphMap;
-
-          if (route.name === "low-stock") {
-            iconName = focused ? "warning" : "warning-outline";
-          } else if (route.name === "index") {
-            iconName = focused ? "home" : "home-outline";
-          } else {
-            iconName = focused ? "person" : "person-outline";
-          }
-
-          return (
-            <>
-              <Ionicons name={iconName} size={22} color={color} />
-              {focused && (
-                <IoniconsLabel routeName={route.name} />
-              )}
-            </>
-          );
-        },
-      })}
+        tabBarActiveTintColor: COLORS.shelfGreen,
+        tabBarInactiveTintColor: COLORS.ash,
+      }}
     >
-      <Tabs.Screen name="low-stock" />
-      <Tabs.Screen name="index" />
-      <Tabs.Screen name="account" />
+      {/* 1. LOW-STOCKS — LEFT */}
+      <Tabs.Screen
+        name="low-stock"
+        options={{
+          tabBarIcon: ({ focused, color, size }) => (
+            <TabIcon
+              focused={focused}
+              color={focused ? COLORS.amber : color}
+              size={size}
+              icon="warning-outline"
+              label="Low Stock"
+            />
+          ),
+        }}
+      />
+
+      {/* 2. HOME — CENTER */}
+      <Tabs.Screen
+        name="index"
+        options={{
+          tabBarIcon: ({ focused, color, size }) => (
+            <TabIcon
+              focused={focused}
+              color={color}
+              size={size}
+              icon={focused ? "home" : "home-outline"}
+              label="Home"
+            />
+          ),
+        }}
+      />
+
+      {/* 3. ACCOUNT — RIGHT */}
+      <Tabs.Screen
+        name="account"
+        options={{
+          tabBarIcon: ({ focused, color, size }) => (
+            <TabIcon
+              focused={focused}
+              color={color}
+              size={size}
+              icon={focused ? "person" : "person-outline"}
+              label="Account"
+            />
+          ),
+        }}
+      />
     </Tabs>
   );
 }
 
-function IoniconsLabel({ routeName }: { routeName: string }) {
-  let label = "";
+/* ---------------------------- */
+/* Tab Icon Component           */
+/* ---------------------------- */
 
-  if (routeName === "low-stock") label = "Low Stock";
-  if (routeName === "index") label = "Home";
-  if (routeName === "account") label = "Account";
-
+function TabIcon({
+  focused,
+  icon,
+  label,
+  color,
+  size,
+}: {
+  focused: boolean;
+  icon: keyof typeof Ionicons.glyphMap;
+  label: string;
+  color: string;
+  size: number;
+}) {
   return (
-    <Text
+    <div
       style={{
-        fontSize: 11,
-        marginTop: 2,
-        color: COLORS.shelfGreen,
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        justifyContent: "center",
+        gap: 2,
       }}
     >
-      {label}
-    </Text>
+      <Ionicons name={icon} size={size} color={color} />
+      {focused && (
+        <span
+          style={{
+            fontSize: 12,
+            color: color,
+            lineHeight: "14px",
+          }}
+        >
+          {label}
+        </span>
+      )}
+    </div>
   );
 }
