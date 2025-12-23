@@ -3,6 +3,8 @@ import { View, Text, TextInput, Pressable, StyleSheet, Modal } from "react-nativ
 import { COLORS } from "../theme/colors";
 import { TYPE } from "../theme/type";
 import { SPACING } from "../theme/spacing";
+import { DEFAULT_MIN_STOCK } from "../constants/inventory";
+
 
 type Props = {
   visible: boolean;
@@ -93,3 +95,5 @@ const styles = StyleSheet.create({
     fontWeight: "600",
   },
 });
+
+Number(5) || DEFAULT_MIN_STOCK
